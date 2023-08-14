@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  max-width: 1280px;
+  margin: 0;
+  padding: 0;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.sidebar {
+  width: 234px;
+  flex-shrink: 0;
+  opacity: 0.6;
+  background: var(--light-theme-gray-pure-white, #FFF);
+}
+
+.sidebar .nav {
+  display: flex;
+  width: 212px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
