@@ -18,10 +18,16 @@
   background: var(--light-theme-gray-pure-white, #FFF);
 }
 
-.sidebar .nav {
+.sidebar .sidebar-container {
   display: flex;
   width: 212px;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+}
+
+.sidebar .sidebar-container .sidebar-component {
+  width: 100%;
+  height: auto;
+  background-color: rgb(241, 241, 241);
 }
