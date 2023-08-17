@@ -1,7 +1,8 @@
+import './App.css' 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; 
 import RootLayout from './layout/RootLayout'
 import Dashboard from './pages/Dashboard'
-import './App.css' 
+import Login from "./pages/Login";
 
 function App() {
 
@@ -9,9 +10,10 @@ function App() {
         <Router> 
             <RootLayout>
                 <Routes>
-                    <Route path='/' element={<Dashboard />}/>
+                    <Route path='/' element={<Dashboard />}/> 
+                    <Route path='/login' element={<Login />}/>
                 </Routes>
-            </RootLayout> 
+            </RootLayout>
         </Router>
     )
 }

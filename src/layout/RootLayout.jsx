@@ -1,11 +1,24 @@
+import { useLocation } from "react-router-dom";
 import Sidebar from "../component/sidebar";
 import Topbar from "../component/topbar";
 function RootLayout({ children }) { 
+    
+    const location = useLocation();
+
     return (
-        <div className="flex gap-5">
-            <Sidebar />
-            <Topbar/>
-            <main className="max-w-5xl flex-1 mx-auto py-4">{children}</main>
+        <div className="flex gap-2">
+            { 
+                location.pathname == '/login' ? 
+                <main className="block top-0 w-full mx-5 mt-5 py-4">{children}</main>
+            : 
+                <>
+                    <Sidebar />
+                    <div className="column-1 w-full">
+                        <Topbar/>
+                        <main className="block top-0 w-full mx-5 mt-5 py-4">{children}</main>
+                    </div>
+                </>
+            }
         </div>
     )
 }
