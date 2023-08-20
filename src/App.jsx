@@ -1,18 +1,25 @@
-import './App.css' 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; 
-import RootLayout from './layout/RootLayout'
-import Dashboard from './pages/Dashboard'
-import Login from "./pages/Login";
+import './App.css'
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import RootLayout from './lib/layout/RootLayout'
+import Dashboard from './app/pages/Dashboard'
+import Login from "./app/pages/Login";
+import Register from './app/pages/Register';
+import { Provider } from 'react-redux';
+import store from './app/redux/store';
 
 function App() {
-
+    const loggedIn = false;
     return (
-        <Router> 
+        <Router>
             <RootLayout>
-                <Routes>
-                    <Route path='/' element={<Dashboard />}/> 
-                    <Route path='/login' element={<Login />}/>
-                </Routes>
+                <Provider store={store}>
+                    <Routes>
+                        <Route path='/dashboard' element={<Dashboard />} />
+                        <Route path='/register' element={<Register />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path="/" element={!loggedIn ? <Navigate to="/login" /> : <Dashboard />} />
+                    </Routes>
+                </Provider>
             </RootLayout>
         </Router>
     )
