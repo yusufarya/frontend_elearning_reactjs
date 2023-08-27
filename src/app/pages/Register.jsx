@@ -1,11 +1,17 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { registerUser } from "../redux/actions/registerSlice.js"
+import { apiRequestFailure, apiRequestStart, apiRequestSuccess } from "../redux/actions/userSlice.js"
+import axios from "axios"
+import { getLastIdentityNumber, registerUser } from "../controller/User-controller.jsx"
 
 function Register() {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    const [notifSuccess, setNotifSuccess] = useState(false)
+    const [notifError, setNotifError] = useState(false)
 
     const [data, setData] = useState(
         { firstName: '', lastName: '', gender: '', telp: '', religion: '', place_of_birth: '', date_of_birth: '', email: '', password: '', roleId: '1', status: '1' }
@@ -14,31 +20,63 @@ function Register() {
     function handleInput(e) {
         setData({ ...data, [e.target.name]: e.target.value })
     }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        console.log(data)
-        dispatch(registerUser(data))
+    
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        try {
+            const getLastIdNumber = await getLastIdentityNumber(1);
+            setData({ ...data, "identity_number": getLastIdNumber })
+            dispatch(apiRequestStart());
+            dispatch(apiRequestSuccess(data));
+            const request = apiRequestSuccess(data)
+            const registration = await registerUser(request.payload);
+            if (registration.status == "success") {
+                setNotifSuccess('Registration success')
+                setTimeout(() => {
+                    navigate('/login')
+                }, 3000);
+            } else {
+                setNotifError(registration.error)
+            }
+        } catch (error) {
+            dispatch(apiRequestFailure(error.toString()));
+        }
+        setTimeout(() => {
+            setNotifError(false)
+            setNotifSuccess(false)
+        }, 3000);
     }
 
     return (
         <>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-5 lg:px-8">
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
                     {/* <img
                         className="mx-auto h-10 w-auto hidden"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                         alt="Your Company"
                     /> */}
-                    <h2 className="mt-1 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
+                    <h2 className="mt-1 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900 drop-shadow-md">
                         Register User
                     </h2>
                 </div>
 
-                <div className="mt-10 w-12/12 sm:mx-auto sm:w-full lg:max-w-lg md:max-w-md sm:max-w-sm">
+                <div className="mt-10 w-12/12 sm:mx-auto sm:w-full lg:max-w-xl md:max-w-lg sm:max-w-sm px-5 py-5 shadow-lg rounded-md">
                     <form className="space-y-2 mx-0" onSubmit={handleSubmit}>
 
-                        <div className="grid grid-cols-2 gap-3 w-12/12">
+                        {
+                            notifError  ? 
+                            <div className="bg-red-400 text-white rounded-sm p-2 w-full flex">{notifError}</div>
+                            :
+                            ''
+                        }
+                        {
+                            notifSuccess  ? 
+                            <div className="bg-green-400 text-white rounded-sm p-2 w-full flex">{notifSuccess}</div>
+                            :
+                            ''
+                        }
+                        <div className="grid grid-cols-2 gap-3 w-full">
                             <div>
                                 <label htmlFor="firstName" className="block text-sm font-medium leading-5 text-gray-900">
                                     First Name
@@ -198,7 +236,7 @@ function Register() {
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Have an account?{' '}
                         <NavLink to="/login" className="font-semibold leading-5 text-indigo-600 hover:text-indigo-500">
-                            Login heere
+                            Login here
                         </NavLink>
                     </p>
                 </div >

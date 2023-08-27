@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import registerReducer from "./actions/registerSlice"
+import userReducer from "./actions/userSlice"
 
 const store = configureStore({
-    reducer: {register: registerReducer},
+    reducer: {register: userReducer},
 });
 
 // console.log("ON CREATE STORE: ", store.getState())
 
 store.subscribe(() => {
-    console.log("STORE CHANGE: ", store.getState())
+    // console.log("STORE CHANGE: ", store.getState())
 })
 
 export default store;

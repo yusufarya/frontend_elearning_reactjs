@@ -1,6 +1,30 @@
-import { NavLink } from "react-router-dom"
+import { useState } from "react"
+import { NavLink, useNavigate } from "react-router-dom"
+import { loginUSer } from "../controller/User-controller"
 
 function Login() {
+    const navigate = useNavigate()
+
+    const [data, setData] = useState({email : '', password: ''})
+
+    function handleInput(e) {
+        setData({...data, [e.target.name]: e.target.value} )
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const loginUser = await loginUSer(data)
+            if (loginUser.status == "success") {
+                navigate('/dashboard')
+            } else {
+                alert(registration.error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -16,13 +40,14 @@ function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Email address
                             </label>
                             <div className="mt-2">
                                 <input
+                                    value={data.email} onChange={(e) => handleInput(e)}
                                     id="email"
                                     name="email"
                                     type="email"
@@ -46,6 +71,7 @@ function Login() {
                             </div>
                             <div className="mt-2">
                                 <input
+                                    value={data.password} onChange={(e) => handleInput(e)}
                                     id="password"
                                     name="password"
                                     type="password"
