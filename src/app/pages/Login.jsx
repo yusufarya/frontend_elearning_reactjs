@@ -1,8 +1,14 @@
 import { useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
-import { loginUSer } from "../controller/User-controller"
+import { loginUser } from "../controller/User-controller"
+import { useDispatch } from "react-redux"
+import { apiLoginToken } from "../redux/actions/userSlice"
+import Swal from "sweetalert2"
 
 function Login() {
+
+    
+    const dispath = useDispatch()
     const navigate = useNavigate()
 
     const [data, setData] = useState({email : '', password: ''})
@@ -14,9 +20,32 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const loginUser = await loginUSer(data)
-            if (loginUser.status == "success") {
-                navigate('/dashboard')
+            const result = await loginUser(data)
+            sessionStorage.setItem("loginToken", result.token);
+
+            if (result.status == "success") {
+                dispath(apiLoginToken(result))
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                  
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Login in successfully'
+                })
+                setTimeout(() => {
+                    navigate('/dashboard')
+                    // window.location.reload();
+                }, 2000);
             } else {
                 alert(registration.error)
             }
@@ -53,7 +82,7 @@ function Login() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
@@ -77,7 +106,7 @@ function Login() {
                                     type="password"
                                     autoComplete="current-password"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>

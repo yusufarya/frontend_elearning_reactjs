@@ -22,5 +22,17 @@ const registSlice = createSlice({
     }
 })
 
+const loginSlice = createSlice({
+    name: "login",
+    initialState : {},
+    reducers: {
+        apiLoginToken : (state, action) => {
+            state.data = action.payload
+        }
+    }
+})
+
 export const {apiRequestStart, apiRequestSuccess, apiRequestFailure}= registSlice.actions
-export default registSlice.reducer
+// export default registSlice.reducer //
+export const {apiLoginToken}= loginSlice.actions
+export default loginSlice.reducer

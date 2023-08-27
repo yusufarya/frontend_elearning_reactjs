@@ -41,18 +41,31 @@ export const getLastIdentityNumber = (id) => {
     return result
 }
 
-export const loginUSer = (value) => {
+export const loginUser = (value) => {
     const result = axios.post("http://localhost:3000/api/users/login", {
         email: value.email,
         password: value.password
     })
     .then(response => {
-        // console.log(response)
-        return {"status" : "success"}
+        return {"status" : "success", "token" : response.data.data.token}
     })
     .catch(error => {
-        // console.log(error)
         return {"status" : "failed", 'error' : error.response.data.errors}
     })
     return result
 } 
+
+export const getDataUser = (loginToken) => {
+    const result = axios.get("http://localhost:3000/api/users/current", {
+        headers: {
+            Authorization : loginToken
+        }
+    })
+    .then(response => {
+        return response.data.data
+    })
+    .catch(error => {
+        return error
+    })
+    return result
+}

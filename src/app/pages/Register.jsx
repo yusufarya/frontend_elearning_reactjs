@@ -2,15 +2,13 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { apiRequestFailure, apiRequestStart, apiRequestSuccess } from "../redux/actions/userSlice.js"
-import axios from "axios"
 import { getLastIdentityNumber, registerUser } from "../controller/User-controller.jsx"
 
 function Register() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
-    const [notifSuccess, setNotifSuccess] = useState(false)
+ 
     const [notifError, setNotifError] = useState(false)
 
     const [data, setData] = useState(
@@ -31,7 +29,22 @@ function Register() {
             const request = apiRequestSuccess(data)
             const registration = await registerUser(request.payload);
             if (registration.status == "success") {
-                setNotifSuccess('Registration success')
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                  
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Login in successfully'
+                })
                 setTimeout(() => {
                     navigate('/login')
                 }, 3000);
@@ -43,7 +56,6 @@ function Register() {
         }
         setTimeout(() => {
             setNotifError(false)
-            setNotifSuccess(false)
         }, 3000);
     }
 
@@ -67,12 +79,6 @@ function Register() {
                         {
                             notifError  ? 
                             <div className="bg-red-400 text-white rounded-sm p-2 w-full flex">{notifError}</div>
-                            :
-                            ''
-                        }
-                        {
-                            notifSuccess  ? 
-                            <div className="bg-green-400 text-white rounded-sm p-2 w-full flex">{notifSuccess}</div>
                             :
                             ''
                         }

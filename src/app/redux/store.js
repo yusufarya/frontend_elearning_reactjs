@@ -2,7 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./actions/userSlice"
 
 const store = configureStore({
-    reducer: {register: userReducer},
+    reducer: {
+        userReducer: userReducer
+    },
 });
 
 // console.log("ON CREATE STORE: ", store.getState())
