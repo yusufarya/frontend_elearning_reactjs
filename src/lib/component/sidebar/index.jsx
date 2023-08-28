@@ -39,36 +39,36 @@ function Sidebar() {
     }, [pathname]);
 
     const Nav_animation = isTabletMid ?
-        {
-            open: {
-                x: 0,
-                width: '15rem',
-                transition: {
-                    damping: 40,
-                },
+    {
+        open: {
+            x: 0,
+            width: '15rem',
+            transition: {
+                damping: 40,
             },
-            closed: {
-                x: -250,
-                width: 0,
-                transition: {
-                    damping: 40,
-                    delay: 0.15,
-                },
+        },
+        closed: {
+            x: -250,
+            width: 0,
+            transition: {
+                damping: 40,
+                delay: 0.15,
             },
-        } : {
-            open: {
-                width: "15rem",
-                transition: {
-                    damping: 40,
-                },
+        },
+    } : {
+        open: {
+            width: "15rem",
+            transition: {
+                damping: 40,
             },
-            closed: {
-                width: "4rem",
-                transition: {
-                    damping: 40,
-                },
+        },
+        closed: {
+            width: "4rem",
+            transition: {
+                damping: 40,
             },
-        }
+        },
+    }
 
     return (
         <div className="sidebar">

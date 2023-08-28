@@ -12,7 +12,7 @@
 }
 
 .sidebar {
-  width: 234px;
+  max-width: 234px;
   flex-shrink: 0; 
 }
 

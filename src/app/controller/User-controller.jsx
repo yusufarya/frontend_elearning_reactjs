@@ -55,14 +55,14 @@ export const loginUser = (value) => {
     return result
 } 
 
-export const getDataUser = (loginToken) => {
-    const result = axios.get("http://localhost:3000/api/users/current", {
+export const getDataUser = async (loginToken) => {
+    const result = await axios.get("http://localhost:3000/api/users/current", {
         headers: {
             Authorization : loginToken
         }
     })
     .then(response => {
-        return response.data.data
+        return {"data" : response.data.data}
     })
     .catch(error => {
         return error

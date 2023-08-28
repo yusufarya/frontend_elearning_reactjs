@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { loginUser } from "../controller/User-controller"
 import { useDispatch } from "react-redux"
@@ -7,7 +7,6 @@ import Swal from "sweetalert2"
 
 function Login() {
 
-    
     const dispath = useDispatch()
     const navigate = useNavigate()
 
@@ -53,6 +52,13 @@ function Login() {
             console.log(error)
         }
     }
+
+    const loginToken = sessionStorage.getItem("loginToken");
+    useEffect(() => {
+        if(loginToken) {
+            navigate('/dashboard')
+        }
+    })
 
     return (
         <>

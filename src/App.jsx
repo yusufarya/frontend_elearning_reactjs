@@ -13,12 +13,13 @@ function App() {
     return (
         <>
         <Router>
+            
             <RootLayout>
                 <Routes>
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/register' element={<Register />} />
-                    <Route path='/login' element={loginToken ? <Navigate to="/dashboard" /> : <Navigate to="/login" /> } />
+                    <Route path='/login' element={<Login/>} />
                     <Route path="/" element={loginToken ? <Navigate to="/dashboard" /> : <Navigate to="/login" /> } />
                 </Routes>
             </RootLayout>

@@ -1,24 +1,29 @@
-import { useState, Fragment, useEffect} from "react"
+import { useState, Fragment, useEffect, useCallback} from "react"
 import { NavLink, Navigate } from "react-router-dom" 
 import { Menu, Transition } from '@headlessui/react'
 import userdefault from "../../assets/img/userdefault.png"
 import Swal from "sweetalert2"; 
 import { getDataUser } from "../../../app/controller/User-controller"
+import axios from "axios";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 function Topbar() {
-
-    const [user, setUser] = useState([])
     
     const loginToken = sessionStorage.getItem("loginToken");
+    const [dataUser, setDataUser] = useState([])
+    // const result = getDataUser(loginToken)
     useEffect(() => {
-        const dataUser = getDataUser(loginToken)
-        console.log(dataUser)
-    }, [])
-
+        axios.get("http://localhost:3000/api/users/current", {
+            headers: {
+                Authorization : loginToken
+            }
+        })
+          .then(response => setDataUser(response.data.data))
+          .catch(error => console.error('Error fetching data:', error));
+    }, []);
  
     const logoutModal = () => {
 
@@ -49,7 +54,7 @@ function Topbar() {
                             <Menu as="div" className="relative inline-block text-left">
 
                                 <Menu.Button className="rounded-sm p-0 mb-2 text-gray-900 font-semibold hover:bg-gray-50">
-                                    Your name
+                                    {dataUser.name}
                                     <img src={userdefault} className="ms-5 h-5 w-auto inline" />
                                     {/* <AiOutlineDown className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
                                 </Menu.Button> 
