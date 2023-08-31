@@ -25,7 +25,7 @@ function Profile () {
         <Fragment>
             <h2 className="text-2xl font-semibold">My Profile</h2>
             <div className="flex mt-3 p-3 rounded-md shadow-md me-3">
-                <div class="w-full grid grid-cols-3 gap-4">
+                <div className="w-full grid grid-cols-3 gap-4">
                     <div className="bg-slate-50 p-3 w-full border-t-4 border-teal-200">
                         <h2 className="font-bold mb-4 text-gray-700">{dataUser.name}</h2>
                         <p className="text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa odit perspiciatis necessitatibus neque modi, obcaecati unde vel.</p>

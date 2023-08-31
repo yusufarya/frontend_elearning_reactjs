@@ -41,24 +41,42 @@ function Login() {
                     icon: 'success',
                     title: 'Login in successfully'
                 })
+
                 setTimeout(() => {
-                    navigate('/dashboard')
+                    // navigate('/dashboard')
                     // window.location.reload();
                 }, 2000);
+                
             } else {
-                alert(registration.error)
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener('mouseenter', Swal.stopTimer)
+                      toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                  
+                Toast.fire({
+                    icon: 'warning',
+                    title: result.error
+                })
             }
         } catch (error) {
             console.log(error)
         }
+        
+        const loginToken = sessionStorage.getItem("loginToken");
+        useEffect(() => {
+            if(loginToken) {
+                navigate('/dashboard')  
+            }
+        })
     }
 
-    const loginToken = sessionStorage.getItem("loginToken");
-    useEffect(() => {
-        if(loginToken) {
-            navigate('/dashboard')
-        }
-    })
 
     return (
         <>
