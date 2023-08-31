@@ -36,7 +36,7 @@ export const getLastIdentityNumber = (id) => {
         return identity_number
     })
     .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data :', error);
     })
     return result
 }
