@@ -34,5 +34,5 @@ const loginSlice = createSlice({
 
 export const {apiRequestStart, apiRequestSuccess, apiRequestFailure}= registSlice.actions
 // export default registSlice.reducer //
-export const {apiLoginToken}= loginSlice.actions
+export const {apiLoginToken} = loginSlice.actions
 export default loginSlice.reducer

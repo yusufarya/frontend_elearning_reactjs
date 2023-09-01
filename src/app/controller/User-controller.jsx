@@ -23,8 +23,8 @@ export const registerUser = ( async (values) => {
     return result
 })
 
-export const getLastIdentityNumber = (id) => {
-    const result = axios.get('http://localhost:3000/api/users/getLastIdentityNumber', {
+export const getLastIdentityNumber = async (id) => {
+    const result = await axios.get('http://localhost:3000/api/users/getLastIdentityNumber', {
         roleId: id,
     })
     .then(response => {

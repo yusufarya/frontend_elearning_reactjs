@@ -36,14 +36,14 @@ function Login() {
                       toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-                  
+                
                 Toast.fire({
                     icon: 'success',
                     title: 'Login in successfully'
                 })
 
                 setTimeout(() => {
-                    // navigate('/dashboard')
+                    navigate('/dashboard')
                     // window.location.reload();
                 }, 2000);
                 
@@ -69,14 +69,14 @@ function Login() {
             console.log(error)
         }
         
-        const loginToken = sessionStorage.getItem("loginToken");
-        useEffect(() => {
-            if(loginToken) {
-                navigate('/dashboard')  
-            }
-        })
     }
-
+    
+    const loginToken = sessionStorage.getItem("loginToken");
+    useEffect(() => {
+        if(loginToken) {
+            navigate('/dashboard')  
+        }
+    })
 
     return (
         <>

@@ -1,5 +1,5 @@
 import { useState, Fragment, useEffect, useCallback} from "react"
-import { NavLink, Navigate } from "react-router-dom" 
+import { NavLink, useNavigate } from "react-router-dom" 
 import { Menu, Transition } from '@headlessui/react'
 import userdefault from "../../assets/img/userdefault.png"
 import Swal from "sweetalert2"; 
@@ -11,6 +11,8 @@ function classNames(...classes) {
 }
 
 function Topbar() {
+
+    const navigate = useNavigate()
     
     const loginToken = sessionStorage.getItem("loginToken");
     const [dataUser, setDataUser] = useState([])
@@ -38,7 +40,7 @@ function Topbar() {
                 Swal.fire('Success!', 'logout successfuly', 'success')
                 sessionStorage.setItem("loginToken", '');
                 setTimeout(() => {
-                    window.location.reload();
+                    navigate('/login')
                 }, 2000);
             }
         })
