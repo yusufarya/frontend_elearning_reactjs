@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { apiRequestFailure, apiRequestStart, apiRequestSuccess } from "../redux/actions/userSlice.js"
 import { getLastIdentityNumber, registerUser } from "../controller/User-controller.jsx"
