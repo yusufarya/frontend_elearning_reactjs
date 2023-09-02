@@ -1,22 +1,24 @@
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import isLogin from "../authorization/cek-login";
+import getToken from "../authorization/getToken";
 
 function Profile () { 
-
-    const loginToken = sessionStorage.getItem("loginToken");
+    isLogin()
+    const loginToken = getToken();
     const [dataUser, setDataUser] = useState([])
     
     useEffect(() => {
-        axios.get("http://localhost:3000/api/users/current", {
-            headers: {
-                Authorization : loginToken
-            }
-        })
-          .then(response => setDataUser(response.data.data))
-          .catch(error => console.error('Error fetching data:', error));
+        if(loginToken) {
+            axios.get("http://localhost:3000/api/users/current", {
+                headers: {
+                    Authorization : loginToken
+                }
+            })
+              .then(response => setDataUser(response.data.data))
+              .catch(error => console.error('Error fetching data:', error));
+        }
     }, []);
-
-    console.log(dataUser)
 
     const date = new Date(dataUser.createdAt); // Your date here
     const dateCreated = date.toLocaleDateString('en-GB');

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const registerUser = ( async (values) => {
+    console.log(values)
     const result = await axios.post("http://localhost:3000/api/users", {
         identity_number: values.identity_number.toString(),
         name: values.firstName + ' ' +values.lastName,
@@ -14,11 +15,9 @@ export const registerUser = ( async (values) => {
         roleId: values.roleId,
         status: values.status
     }).then( (response) => {
-        // console.log(JSON.stringify(response.data));
         return {"status" : "success"}
     }).catch( (error) => {
         return {"status" : "failed", 'error' : error.response.data.errors}
-        // console.log();
     });
     return result
 })

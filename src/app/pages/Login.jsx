@@ -4,6 +4,7 @@ import { loginUser } from "../controller/User-controller"
 import { useDispatch } from "react-redux"
 import { apiLoginToken } from "../redux/actions/userSlice"
 import Swal from "sweetalert2"
+import isLogin from "../authorization/cek-login"
 
 function Login() {
 
@@ -18,65 +19,55 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try {
-            const result = await loginUser(data)
-            sessionStorage.setItem("loginToken", result.token);
 
-            if (result.status == "success") {
-                dispath(apiLoginToken(result))
+        const result = await loginUser(data)
+        sessionStorage.setItem("loginToken", result.token);
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener('mouseenter', Swal.stopTimer)
-                      toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
+        if (result.status == "success") {
+            dispath(apiLoginToken(result))
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'Login in successfully'
+            })
+
+            setTimeout(() => {
+                navigate('/dashboard')
+            }, 2000);
+            
+        } else {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
                 
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Login in successfully'
-                })
-
-                setTimeout(() => {
-                    navigate('/dashboard')
-                    // window.location.reload();
-                }, 2000);
-                
-            } else {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener('mouseenter', Swal.stopTimer)
-                      toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                  
-                Toast.fire({
-                    icon: 'warning',
-                    title: result.error
-                })
-            }
-        } catch (error) {
-            console.log(error)
+            Toast.fire({
+                icon: 'warning',
+                title: result.error
+            })
         }
-        
     }
     
-    const loginToken = sessionStorage.getItem("loginToken");
-    useEffect(() => {
-        if(loginToken) {
-            navigate('/dashboard')  
-        }
-    })
+    isLogin()
 
     return (
         <>

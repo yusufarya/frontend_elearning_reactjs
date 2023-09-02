@@ -1,5 +1,8 @@
+import isLogin from "../authorization/cek-login"
 
 function Dashboard () { 
+
+    isLogin()
     return (
         <>
             <h2 className="text-2xl font-semibold">Dashboard</h2>

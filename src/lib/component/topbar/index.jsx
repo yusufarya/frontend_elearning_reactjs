@@ -3,8 +3,8 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { Menu, Transition } from '@headlessui/react'
 import userdefault from "../../assets/img/userdefault.png"
 import Swal from "sweetalert2"; 
-import { getDataUser } from "../../../app/controller/User-controller"
 import axios from "axios";
+import getToken from "../../../app/authorization/getToken";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -14,17 +14,19 @@ function Topbar() {
 
     const navigate = useNavigate()
     
-    const loginToken = sessionStorage.getItem("loginToken");
+    const loginToken = getToken()
     const [dataUser, setDataUser] = useState([])
-    // const result = getDataUser(loginToken)
+
     useEffect(() => {
-        axios.get("http://localhost:3000/api/users/current", {
-            headers: {
-                Authorization : loginToken
-            }
-        })
-          .then(response => setDataUser(response.data.data))
-          .catch(error => console.error('Error fetching data:', error));
+        if(loginToken) {
+            axios.get("http://localhost:3000/api/users/current", {
+                headers: {
+                    Authorization : loginToken
+                }
+            })
+              .then(response => setDataUser(response.data.data))
+              .catch(error => console.error('Error fetching data:', error));
+        }
     }, []);
  
     const logoutModal = () => {
@@ -38,7 +40,7 @@ function Topbar() {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 Swal.fire('Success!', 'logout successfuly', 'success')
-                sessionStorage.setItem("loginToken", '');
+                sessionStorage.removeItem("loginToken");
                 setTimeout(() => {
                     navigate('/login')
                 }, 2000);

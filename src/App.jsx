@@ -5,22 +5,22 @@ import Dashboard from './app/pages/Dashboard'
 import Login from "./app/pages/Login";
 import Register from './app/pages/Register'; 
 import Profile from './app/pages/Profile';
+import getToken from './app/authorization/getToken';
 
 function App() { 
 
-    const loginToken = sessionStorage.getItem("loginToken");
-
+    const loginToken = getToken()
+    
     return (
         <>
         <Router>
-            
             <RootLayout>
                 <Routes>
                     <Route path='/dashboard' element={<Dashboard />} />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login/>} />
-                    <Route path="/" element={loginToken ? <Navigate to="/dashboard" /> : <Navigate to="/login" /> } />
+                    <Route path="/" element={loginToken != false ? <Navigate to="/dashboard" /> : <Navigate to="/login" /> } />
                 </Routes>
             </RootLayout>
         </Router>

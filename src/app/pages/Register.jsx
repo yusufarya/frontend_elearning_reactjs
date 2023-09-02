@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { apiRequestFailure, apiRequestStart, apiRequestSuccess } from "../redux/actions/userSlice.js"
 import { getLastIdentityNumber, registerUser } from "../controller/User-controller.jsx"
+import Swal from "sweetalert2"
 
 function Register() {
 
@@ -21,45 +22,43 @@ function Register() {
     
     const handleSubmit = async(e) => {
         e.preventDefault()
-        try {
-            const getLastIdNumber = await getLastIdentityNumber(1);
-            if(getLastIdNumber) {
-                setData({ ...data, "identity_number": getLastIdNumber })
-                dispatch(apiRequestStart());
-                dispatch(apiRequestSuccess(data));
-                const request = apiRequestSuccess(data)
-                console.log(request)
-                const registration = await registerUser(request.payload);
+
+        const getLastIdNumber = await getLastIdentityNumber(1);
+        console.log(getLastIdNumber)
+        if(getLastIdNumber) {
+            setData({ ...data, "identity_number": getLastIdNumber })
+            console.log(data)
+            // dispatch(apiRequestStart());
+            // dispatch(apiRequestSuccess(data));
+            // const request = apiRequestSuccess(data)
+            const registration = await registerUser(data);
+            console.log(registration)
+            if (registration.status == "success") {
                 console.log(registration)
-                if (registration.status == "success") {
-                    console.log(registration)
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                          toast.addEventListener('mouseenter', Swal.stopTimer)
-                          toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-                      
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Registration is successfully'
-                    })
-                    setTimeout(() => {
-                        alert('p')    
-                        navigate('/login')
-                    }, 3000);
-                } else {
-                    setNotifError(registration.error)
-                }
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                    
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registration is successfully'
+                })
+                setTimeout(() => {
+                    alert('p')    
+                    navigate('/login')
+                }, 3000);
+            } else {
+                setNotifError(registration.error)
             }
-        } catch (error) {
-            dispatch(apiRequestFailure(error.toString()));
-        }
+        } 
         setTimeout(() => {
             setNotifError(false)
         }, 3000);
